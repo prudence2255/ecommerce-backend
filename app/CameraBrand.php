@@ -10,10 +10,6 @@ class CameraBrand extends Model
     use Sluggable;
     protected $fillable = ['brand', 'slug'];
 
-    // public function computers(){
-    //     return $this->hasMany('App\Computer');
-    // }
-
     
     public function sluggable()
     {

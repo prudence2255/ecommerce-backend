@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\ComputerBrand;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class ComputerBrandController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class ComputerBrandController extends Controller
     {
         
         $computerBrands = ComputerBrand::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $computerBrands], 200);
+        return response()->json(['data' => $this->tag_transform($computerBrands, 'brand')], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class ComputerBrandController extends Controller
      */
     public function destroy(ComputerBrand $computerBrand)
     {
-        // if($computerBrand->computers){
-        //     $computerBrand->computers()->delete();
-        // }
         $computerBrand->delete();
         return response()->json(['message' => 'computer brand deleted successfully'], 200);
     }

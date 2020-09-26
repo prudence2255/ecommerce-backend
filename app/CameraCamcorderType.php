@@ -10,9 +10,6 @@ class CameraCamcorderType extends Model
     use Sluggable;
     protected $fillable = ['type', 'slug'];
 
-    // public function computers(){
-    //     return $this->hasMany('App\Computer');
-    // }
 
     
     public function sluggable()

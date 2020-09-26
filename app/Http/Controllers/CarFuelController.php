@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\CarFuel;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class CarFuelController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CarFuelController extends Controller
     {
         
         $carFuels = CarFuel::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $carFuels], 200);
+        return response()->json(['data' => $this->option_transform($carFuels)], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class CarFuelController extends Controller
      */
     public function destroy(CarFuel $carFuel)
     {
-        // if($carFuel->computers){
-        //     $carFuel->computers()->delete();
-        // }
         $carFuel->delete();
         return response()->json(['message' => 'car fuel deleted successfully'], 200);
     }

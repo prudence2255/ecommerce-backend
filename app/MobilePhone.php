@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class MobilePhone extends Model
 {
-    protected $fillable = ['edition', 'ad_id', 
+    protected $fillable = ['edition', 
+                            'ad_id', 
                             'mobile_brand_id',
-                            'mobile_model_id'
+                            'mobile_model_id',
+                            'features'
                         ];
+
+protected $casts = [
+    'features' => 'array'
+];
 
     public function ad(){
         return $this->belongsTo('App\Ad');
@@ -22,7 +28,4 @@ class MobilePhone extends Model
         return $this->belongsTo('App\MobileModel');
     }
 
-    public function mobile_features(){
-        return $this->belongsToMany('App\MobileFeature');
-    }
 }

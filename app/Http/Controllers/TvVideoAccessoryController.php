@@ -79,9 +79,6 @@ class TvVideoAccessoryController extends Controller
      */
     public function destroy(TvAccessory $tvAccessory)
     {
-        // if($TvAccessory->computers){
-        //     $TvAccessory->computers()->delete();
-        // }
         $tvAccessory->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

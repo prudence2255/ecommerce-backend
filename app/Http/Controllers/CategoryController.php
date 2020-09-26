@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Requests\NewCategoryRequest;
+use App\Http\Traits\OptionTrait;
 
 class CategoryController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +20,12 @@ class CategoryController extends Controller
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
-        return response()->json(['data' => $categories], 200);
+        return response()->json(['data' => $this->option_transform($categories)], 200);
     }
 
     public function categories(){
         $categories = Category::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $categories], 200);
+        return response()->json(['data' => $this->option_transform($categories)], 200);
     }
     /**
      * Store a newly created resource in storage.

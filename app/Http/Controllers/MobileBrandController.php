@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\MobileBrand;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class MobileBrandController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class MobileBrandController extends Controller
     public function index()
     {
         $mobileBrands = MobileBrand::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $mobileBrands], 200);
+        return response()->json(['data' => $this->tag_transform($mobileBrands, 'brand')], 200);
     }
 
     /**

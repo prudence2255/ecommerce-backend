@@ -10,7 +10,6 @@ class CarTransmission extends Model
     use Sluggable;
     protected $fillable = ['transmission', 'slug'];
 
-
     
     public function sluggable()
     {

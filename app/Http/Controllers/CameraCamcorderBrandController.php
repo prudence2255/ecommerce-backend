@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\CameraBrand;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class CameraCamcorderBrandController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CameraCamcorderBrandController extends Controller
     {
         
         $cameraBrands = CameraBrand::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $cameraBrands], 200);
+        return response()->json(['data' => $this->tag_transform($cameraBrands, 'brand')], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class CameraCamcorderBrandController extends Controller
      */
     public function destroy(CameraBrand $cameraBrand)
     {
-        // if($CameraBrand->computers){
-        //     $CameraBrand->computers()->delete();
-        // }
         $cameraBrand->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

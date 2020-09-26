@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\AudioType;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class AudioMp3TypeController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class AudioMp3TypeController extends Controller
     {
         
         $audioTypes = AudioType::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $audioTypes], 200);
+        return response()->json(['data' => $this->tag_transform($audioTypes,'type')], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class AudioMp3TypeController extends Controller
      */
     public function destroy(AudioType $audioType)
     {
-        // if($AudioMp3Type->computers){
-        //     $AudioMp3Type->computers()->delete();
-        // }
         $audioType->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

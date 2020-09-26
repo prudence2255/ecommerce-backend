@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\ComputerAccessory;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class ComputerAccessoryTypeController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class ComputerAccessoryTypeController extends Controller
     {
         
         $computerAccessories = ComputerAccessory::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $computerAccessories], 200);
+        return response()->json(['data' => $this->tag_transform($computerAccessories, 'type')], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class ComputerAccessoryTypeController extends Controller
      */
     public function destroy(ComputerAccessory $computerAccessory)
     {
-        // if($computerAccessory->computers){
-        //     $computerAccessory->computers()->delete();
-        // }
         $computerAccessory->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

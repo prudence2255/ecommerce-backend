@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\MotorModel;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class MotorModelController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class MotorModelController extends Controller
     {
         
         $motorModels = MotorModel::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $motorModels], 200);
+        return response()->json(['data' =>$this->option_transform($motorModels, 'model', 'motor_brand_id')], 200);
     }
 
     /**
@@ -84,9 +86,6 @@ class MotorModelController extends Controller
      */
     public function destroy(MotorModel $motorModel)
     {
-        if($motorModel->motor_phones){
-            $motorModel->motor_phones()->delete();
-        }
         $motorModel->delete();
         return response()->json(['message' => 'motor model deleted successfully'], 200);
     }

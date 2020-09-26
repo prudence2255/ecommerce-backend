@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\MobileModel;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class MobileModelController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class MobileModelController extends Controller
     {
         
         $mobileModels = MobileModel::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $mobileModels], 200);
+        return response()->json(['data' => $this->option_transform($mobileModels, 'model', 'mobile_brand_id')], 200);
     }
 
     /**

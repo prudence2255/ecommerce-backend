@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\TvBrand;
 use Illuminate\Http\Request;
 
+use App\Http\Traits\OptionTrait;
+
 class TvBrandController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +19,7 @@ class TvBrandController extends Controller
     {
         
         $tvBrands = TvBrand::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $tvBrands], 200);
+        return response()->json(['data' => $this->tag_transform($tvBrands, 'brand')], 200);
     }
 
     /**
@@ -79,9 +82,6 @@ class TvBrandController extends Controller
      */
     public function destroy(TvBrand $tvBrand)
     {
-        // if($TvBrand->Tvs){
-        //     $TvBrand->Tvs()->delete();
-        // }
         $tvBrand->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

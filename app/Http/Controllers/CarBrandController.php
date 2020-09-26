@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\CarBrand;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class CarBrandController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CarBrandController extends Controller
     {
         
         $carBrands = CarBrand::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $carBrands], 200);
+        return response()->json(['data' => $this->tag_transform($carBrands,'brand')], 200);
     }
 
     /**
@@ -79,9 +81,9 @@ class CarBrandController extends Controller
      */
     public function destroy(CarBrand $carBrand)
     {
-        // if($carBrand->cars){
-        //     $carBrand->cars()->delete();
-        // }
+        if($carBrand->car_models){
+            $carBrand->car_models()->delete();
+        }
         $carBrand->delete();
         return response()->json(['message' => 'car brand deleted successfully'], 200);
     }

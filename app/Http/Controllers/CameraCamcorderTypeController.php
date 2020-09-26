@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\CameraType;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class CameraCamcorderTypeController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CameraCamcorderTypeController extends Controller
     {
         
         $cameraTypes = CameraType::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $cameraTypes], 200);
+        return response()->json(['data' => $this->tag_transform($cameraTypes, 'type')], 200);
     }
 
     /**
@@ -79,9 +81,6 @@ class CameraCamcorderTypeController extends Controller
      */
     public function destroy(CameraType $cameraType)
     {
-        // if($CameraType->computers){
-        //     $CameraType->computers()->delete();
-        // }
         $cameraType->delete();
         return response()->json(['message' => 'Deleted successfully'], 200);
     }

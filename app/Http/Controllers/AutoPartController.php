@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\AutoPart;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class AutoPartController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class AutoPartController extends Controller
     {
         
         $autoParts = AutoPart::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $autoParts], 200);
+        return response()->json(['data' => $this->tag_transform($autoParts, 'type')], 200);
     }
 
     /**

@@ -11,8 +11,6 @@ class ComputerType extends Model
     protected $fillable = ['type', 'slug'];
 
 
-
-
     public function sluggable()
     {
         return [

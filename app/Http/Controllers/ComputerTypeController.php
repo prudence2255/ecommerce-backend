@@ -78,9 +78,6 @@ class ComputerTypeController extends Controller
      */
     public function destroy(ComputerType $computerType)
     {
-        // if($computerType->computers){
-        //     $computerType->computers()->delete();
-        // }
         $computerType->delete();
         return response()->json(['message' => 'computer Type deleted successfully'], 200);
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMobilePhonesTable extends Migration
+class CreateDomesticsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateMobilePhonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mobile_phones', function (Blueprint $table) {
+        Schema::create('domestics', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
-            $table->bigInteger('mobile_brand_id')->unsigned()->index();
-            $table->string('edition')->nullable();
+            $table->string('service_type');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateMobilePhonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobile_phones');
+        Schema::dropIfExists('domestics');
     }
 }

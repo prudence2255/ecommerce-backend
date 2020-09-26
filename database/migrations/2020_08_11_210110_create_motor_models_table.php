@@ -17,7 +17,6 @@ class CreateMotorModelsTable extends Migration
             $table->id();
             $table->string('motor_brand_id');
             $table->string('model');
-          
             $table->string('slug');
             $table->timestamps();
         });

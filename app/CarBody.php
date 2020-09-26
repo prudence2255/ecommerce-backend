@@ -10,10 +10,6 @@ class CarBody extends Model
     use Sluggable;
     protected $fillable = ['body', 'slug'];
 
-    // public function computers(){
-    //     return $this->hasMany('App\Computer');
-    // }
-
     
     public function sluggable()
     {

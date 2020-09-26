@@ -19,9 +19,6 @@ use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function __construct() {
-        //  $this->middleware('isAdmin')->only([
-        //      'makeAdmin', 'register', 'destroy', 'show', 'index'
-        //  ]);
       $this->middleware('auth:api')->except(['login']);  
      
     }
@@ -143,3 +140,4 @@ class AdminController extends Controller
      } 
      
 }
+

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\CarTransmission;
 use Illuminate\Http\Request;
+use App\Http\Traits\OptionTrait;
 
 class CarTransmissionController extends Controller
 {
+    use OptionTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CarTransmissionController extends Controller
     {
         
         $carTransmissions = CarTransmission::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $carTransmissions], 200);
+        return response()->json(['data' => $this->option_transform($carTransmissions)], 200);
     }
 
     /**
