@@ -15,6 +15,7 @@ class AddCustomerIdToAdsTable extends Migration
     {
         Schema::table('ads', function (Blueprint $table) {
             $table->bigInteger('customer_id')->after('uuid')->unsigned()->index();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

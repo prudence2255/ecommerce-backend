@@ -10,7 +10,7 @@ class MotorModel extends Model
     use Sluggable;
     protected $fillable = ['model', 'motor_brand_id', 'slug'];
 
-    public function motor_brands(){
+    public function motor_brand(){
         return $this->BelongsTo('App\MotorBrand');
     }
 

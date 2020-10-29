@@ -16,6 +16,7 @@ class CreateAudioItemsTable extends Migration
         Schema::create('audio_items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->bigInteger('audio_type_id')->unsigned()->index();
             $table->timestamps();
         });

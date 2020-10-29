@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Customer; 
+use App\Customer;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Hash;
 use Session;
@@ -133,6 +133,8 @@ class CustomerController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ], 200);
-     }      
+     } 
+     
+    
 }
 

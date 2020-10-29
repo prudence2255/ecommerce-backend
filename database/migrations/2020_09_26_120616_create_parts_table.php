@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHomeTypesTable extends Migration
+class CreatePartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateHomeTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('home_types', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('slug');
+            $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
+            $table->bigInteger('item_type_id')->unsigned()->index();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateHomeTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('home_types');
+        Schema::dropIfExists('parts');
     }
 }

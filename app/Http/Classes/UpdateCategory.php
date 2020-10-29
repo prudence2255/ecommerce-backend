@@ -11,37 +11,46 @@ use App\Event;
 use App\Domestic;
 use App\Health;
 use App\Trade;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Part;
+use App\Car;
+use App\Motor;
+use App\Customer;
 
-class Category {
+
+class UpdateCategory {
    
     public $ad;
 
-    public function main_data($request){
+    public function main_data($request, $item){
+      $this->ad = $item;
         $request->validate([
             'title' => 'required|string',
-            'condition' => 'required',
             'description' => 'required|string',
             'price' => 'required',
             'images' => 'required',
+            'contact' => 'required',
         ]);
-
-       $this->ad = Ad::create([
+       $this->ad->update([
             'parent_category_id' => $request->parent_category_id,
             'child_category_id' => $request->child_category_id,
             'parent_location_id' => $request->parent_location_id,
             'child_location_id' => $request->child_location_id,
             'customer_id' => $request->user()->id,
             'category' => $request->category,
+            'main_category' => $request->main_category,
+            'main_location' => $request->main_location,
+            'location' => $request->location,
             'title' => $request->title,
             'condition' => $request->condition,
             'description' => $request->description,
             'price' => $request->price,
             'images' => $request->images,
             'negotiable' => $request->negotiable,
-            'uuid' => IdGenerator::generate(['table' => 'users','field' =>'uid', 
-                                        'length' => 6, 'prefix' => date('y')])
         ]);
+        if($this->ad){
+          $customer = Customer::where('id', $request->user()->id)->first();
+          $customer->update(['contact' => $request->contact]);
+        }
       return $this->ad;  
     }
 
@@ -52,16 +61,16 @@ class Category {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-
+     $item = Apartment::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $apart = Apartment::create([
+     $item->update([
             'beds' => $request->beds,
             'baths' => $request->baths,
             'ad_id' => $this->ad->id,
             'landmark' => $request->landmark,
             'size' => $request->size,
         ]);
-        return $apart->ad;
+        return $item->ad;
       }
     }
 
@@ -71,15 +80,15 @@ class Category {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-
+        $item = Land::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $land = Land::create([
+        $item->update([
             'land_type' => $request->land_type,
             'ad_id' => $this->ad->id,
             'landmark' => $request->landmark,
             'size' => $request->size,
         ]);
-        return $land->ad;
+        return $item->ad;
       }
     }
 
@@ -89,15 +98,15 @@ class Category {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-
+        $item = CommercialProp::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $com = CommercialProp::create([
+       $item->update([
             'property_id' => $request->property_id,
             'ad_id' => $this->ad->id,
             'landmark' => $request->landmark,
             'size' => $request->size,
         ]);
-        return $com->ad;
+        return $item->ad;
       }
     }
 
@@ -108,16 +117,16 @@ class Category {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-
+        $item = House::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $house = House::create([
+       $item->update([
             'beds' => $request->beds,
             'baths' => $request->baths,
             'ad_id' => $this->ad->id,
             'landmark' => $request->landmark,
             'size' => $request->size,
         ]);
-        return $house->ad;
+        return $item->ad;
       }
     }
 
@@ -125,13 +134,13 @@ class Category {
         $request->validate([
             'service_type' => 'required',
         ]);
-
+        $item = Trade::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $trade = Trade::create([
-            'service_type' => 'required',
+      $item->update([
+            'service_type' => $request->service_type,
             'ad_id' => $this->ad->id,
         ]);
-        return $trade->ad;
+        return $item->ad;
       }
     }
 
@@ -139,13 +148,13 @@ class Category {
         $request->validate([
             'service_type' => 'required',
         ]);
-
+        $item = Domestic::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $dom = Domestic::create([
-            'service_type' => 'required',
+      $item->update([
+            'service_type' => $request->service_type,
             'ad_id' => $this->ad->id,
         ]);
-        return $dom->ad;
+        return $item->ad;
       }
     }
     public function event($request){
@@ -153,27 +162,93 @@ class Category {
         $request->validate([
             'service_type' => 'required',
         ]);
-
+        $item = Event::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $event = Event::create([
-            'service_type' => 'required',
+     $item->update([
+            'service_type' => $request->service_type,
             'ad_id' => $this->ad->id,
         ]);
-        return $event->ad;
+        return $item->ad;
       }
     }
     public function health($request){
         $request->validate([
             'service_type' => 'required',
         ]);
-
+        $item = Health::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $health = Health::create([
-            'service_type' => 'required',
+       $item->update([
+            'service_type' => $request->service_type,
             'ad_id' => $this->ad->id,
         ]);
-        return $health->ad;
+        return $item->ad;
       }
     }
+
+    public function car($request){
+      $request->validate([
+        'car_brand_id' => 'required',
+        'car_model_id' => 'required',
+        'model_year' => 'required|string',
+        'mileage' => 'required|string',
+        'transmission' => 'required|string',
+        'fuel_type' => 'required|string',
+        'engine_capacity' => 'required|string',
+        'edition' => 'nullable|string'
+      ]);
+      $item = Car::where('ad_id', $this->ad->id)->first();
+    if($this->ad){
+    $item->update([
+        'car_brand_id' => $request->car_brand_id,
+        'car_model_id' => $request->car_model_id,
+        'model_year' => $request->model_year,
+        'mileage' => $request->mileage,
+        'transmission' => $request->transmission,
+        'fuel_type' => $request->fuel_type,
+        'edition' => $request->edition,
+        'engine_capacity' => $request->engine_capacity,
+         'ad_id' => $this->ad->id,
+      ]);
+      return $item->ad;
+    }
+  }
+  
+  public function motor($request){
+    $request->validate([
+      'motor_brand_id' => 'required',
+      'motor_model_id' => 'required',
+      'model_year' => 'required|string',
+      'mileage' => 'required|string',
+      'engine_capacity' => 'required|string',
+      'edition' => 'nullable|string'
+    ]);
+    $item = Motor::where('ad_id', $this->ad->id)->first();
+  if($this->ad){
+    $item->update([
+      'motor_brand_id' => $request->motor_brand_id,
+      'motor_model_id' => $request->motor_model_id,
+      'model_year' => $request->model_year,
+      'mileage' => $request->mileage,
+      'edition' => $request->edition,
+      'engine_capacity' => $request->engine_capacity,
+       'ad_id' => $this->ad->id,
+    ]);
+    return $item->ad;
+  }
+}
+
+public function auto_part($request){
+  $request->validate([
+      'item_type_id' => 'required',
+  ]);
+  $item = Part::where('ad_id', $this->ad->id)->first();
+if($this->ad){
+$item->update([
+      'item_type_id' => $request->item_type_id,
+      'ad_id' => $this->ad->id,
+  ]);
+  return $item->ad;
+}
+}
 
 }

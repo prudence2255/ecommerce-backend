@@ -16,6 +16,7 @@ class CreateCommercialPropsTable extends Migration
         Schema::create('commercial_props', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('size');
             $table->string('landmark')->nullable();
             $table->bigInteger('property_id')->unsigned()->index();

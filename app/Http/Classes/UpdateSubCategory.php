@@ -3,7 +3,7 @@
 
 namespace App\Http\Classes;
 
-use App\Http\Classes\Category;
+use App\Http\Classes\UpdateCategory;
 use App\Ad;
 use App\MobilePhone;
 use App\Computer;
@@ -18,10 +18,9 @@ use App\Electricity;
 use App\HomeAp;
 use App\Furniture;
 use App\Footwear;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\DB;
 
-class CategoryType extends Category{
+class UpdateSubCategory extends UpdateCategory{
        
     public function mobile_phone($request){
         $request->validate([
@@ -29,16 +28,16 @@ class CategoryType extends Category{
             'mobile_model_id' => 'required',
             'edition' => 'nullable|string',
         ]);
-
+        $item = MobilePhone::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $mobile = MobilePhone::create([
+          $item->update([
             'mobile_brand_id' => $request->mobile_brand_id,
             'mobile_model_id' => $request->mobile_model_id,
             'ad_id' => $this->ad->id,
             'edition' => $request->edition,
             'features' => $request->features,
         ]);
-        return $mobile->ad;
+        return $item->ad;
       }
     }
 
@@ -48,15 +47,15 @@ class CategoryType extends Category{
             'model' => 'required|string',
             'device' => 'required',
         ]);
-
-      if($this->ad){
-        $computer = Computer::create([
+        $item = Computer::where('ad_id', $this->ad->id)->first();
+      if($this->ad){  
+        $item->update([
             'computer_brand_id' => $request->computer_brand_id,
             'device' => $request->device,
             'ad_id' => $this->ad->id,
             'model' => $request->model,
         ]);
-        return $computer->ad;
+        return $item->ad;
       }
     }
 
@@ -64,13 +63,13 @@ class CategoryType extends Category{
         $request->validate([
             'computer_accessory_id' => 'required',
         ]);
-
+        $item = ComputerItem::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $computer_accessory = ComputerItem::create([
+     $item->update([
             'computer_accessory_id' => $request->computer_accessory_id,
             'ad_id' => $this->ad->id,
         ]);
-        return $computer_accessory->ad;
+       return $item->ad;
       }
     }
     
@@ -78,13 +77,13 @@ class CategoryType extends Category{
         $request->validate([
             'audio_type_id' => 'required',
         ]);
-
+        $item = AudioItem::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $audio_type = AudioItem::create([
+         $item->update([
             'audio_type_id' => $request->audio_type_id,
             'ad_id' => $this->ad->id,
         ]);
-        return $audio_type->ad;
+        return $item->ad;
       }
 
     }
@@ -94,14 +93,14 @@ class CategoryType extends Category{
             'camera_type_id' => 'required',
             'camera_brand_id' => 'required',
         ]);
-
+        $item = CameraItem::where('ad_id', $this->ad->id)->first();
       if($this->ad){
-        $camera_type = CameraItem::create([
+       $item->update([
             'camera_type_id' => $request->camera_type_id,
             'camera_brand_id' => $request->camera_brand_id,
             'ad_id' => $this->ad->id,
         ]);
-        return $camera_type->ad;
+        return $item->ad;
       }
 
     }  
@@ -111,14 +110,14 @@ class CategoryType extends Category{
           'tv_brand_id' => 'required',
           'model' => 'required|string',
       ]);
-
+      $item = Tv::where('ad_id', $this->ad->id)->first();
     if($this->ad){
-      $tv = Tv::create([
+      $item->update([
           'tv_brand_id' => $request->tv_brand_id,
           'ad_id' => $this->ad->id,
           'model' => $request->model,
       ]);
-      return $tv->ad;
+      return $item->ad;
     }
   }
 
@@ -126,13 +125,13 @@ class CategoryType extends Category{
     $request->validate([
         'item_type' => 'required',
     ]);
-
+    $item = TvItem::where('ad_id', $this->ad->id)->first();
   if($this->ad){
-    $tv_accessory = TvItem::create([
+ $item->update([
         'item_type' => $request->item_type,
         'ad_id' => $this->ad->id,
     ]);
-    return $tv_accessory->ad;
+    return $item->ad;
   }
 }
 
@@ -140,13 +139,13 @@ public function beauty($request){
   $request->validate([
       'item_type' => 'required',
   ]);
-
+  $item = Beauty::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $beauty = Beauty::create([
+$item->update([
       'item_type' => $request->item_type,
       'ad_id' => $this->ad->id,
   ]);
-  return $beauty->ad;
+  return $item->ad;
 }
 }
 
@@ -154,13 +153,13 @@ public function clothing($request){
   $request->validate([
       'gender' => 'required',
   ]);
-
+  $item = Clothing::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $clothing = Clothing::create([
+$item->update([
       'gender' => $request->gender,
       'ad_id' => $this->ad->id,
   ]);
-  return $clothing->ad;
+  return $item->ad;
 }
 }
 
@@ -168,13 +167,13 @@ public function footwear($request){
   $request->validate([
       'gender' => 'required',
   ]);
-
+  $item = Footwear::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $footwear = Footwear::create([
+   $item->update([
       'gender' => $request->gender,
       'ad_id' => $this->ad->id,
   ]);
-  return $footwear->ad;
+  return $item->ad;
 }
 }
 
@@ -182,13 +181,13 @@ public function electricity($request){
   $request->validate([
       'item_type' => 'required',
   ]);
-
+  $item = Electricity::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $elect = Electricity::create([
+ $item->update([
       'item_type' => $request->item_type,
       'ad_id' => $this->ad->id,
   ]);
-  return $elect->ad;
+  return $item->ad;
 }
 }
 
@@ -196,13 +195,13 @@ public function home_ap($request){
   $request->validate([
       'item_type' => 'required',
   ]);
-
+  $item = HomeAp::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $home = HomeAp::create([
+ $item->update([
       'item_type' => $request->item_type,
       'ad_id' => $this->ad->id,
   ]);
-  return $home->ad;
+  return $item->ad;
 }
 }
 
@@ -210,13 +209,13 @@ public function furniture($request){
   $request->validate([
       'furniture_type' => 'required',
   ]);
-
+  $item = Furniture::where('ad_id', $this->ad->id)->first();
 if($this->ad){
-  $furniture = Furniture::create([
+ $item->update([
       'furniture_type' => $request->furniture_type,
       'ad_id' => $this->ad->id,
   ]);
-  return $furniture->ad;
+  return $item->ad;
 }
 }
 }

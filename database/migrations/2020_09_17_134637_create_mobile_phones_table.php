@@ -16,6 +16,7 @@ class CreateMobilePhonesTable extends Migration
         Schema::create('mobile_phones', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->bigInteger('mobile_brand_id')->unsigned()->index();
             $table->bigInteger('mobile_model_id')->unsigned()->index();
             $table->string('edition')->nullable();

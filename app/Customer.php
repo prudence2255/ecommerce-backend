@@ -21,7 +21,12 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'uid', 'slug'
+        'name', 'email', 'password', 'uid', 'slug', 'provider', 'contact'
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'contact' => 'array'
     ];
 
     public function socials(){
@@ -57,9 +62,7 @@ class Customer extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    
 
 
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMobileFeaturesTable extends Migration
+class ChangePriceInAdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateMobileFeaturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mobile_features', function (Blueprint $table) {
-            $table->id();
-            $table->string('feature')->nullable();
-            $table->timestamps();
+        Schema::table('ads', function (Blueprint $table) {
+            $table->bigInteger('price')->change();
         });
     }
 
@@ -27,6 +25,8 @@ class CreateMobileFeaturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobile_features');
+        Schema::table('ads', function (Blueprint $table) {
+            $table->bigInteger('price')->change();
+        });
     }
 }

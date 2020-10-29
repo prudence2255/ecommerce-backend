@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCarTransmissionsTable extends Migration
+class ChangeConditionInAdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCarTransmissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('car_transmissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('transmission');
-            $table->string('slug');
-            $table->timestamps();
+        Schema::table('ads', function (Blueprint $table) {
+            $table->string('condition')->nullable()->change();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCarTransmissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_transmissions');
+        Schema::table('ads', function (Blueprint $table) {
+            $table->string('condition')->nullable()->change();
+        });
     }
 }

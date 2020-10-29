@@ -16,6 +16,7 @@ class CreateHomeApsTable extends Migration
         Schema::create('home_aps', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('item_type');
             $table->timestamps();
         });

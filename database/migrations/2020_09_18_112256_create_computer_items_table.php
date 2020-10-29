@@ -16,6 +16,7 @@ class CreateComputerItemsTable extends Migration
         Schema::create('computer_items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->bigInteger('computer_accessory_id')->unsigned()->index();
             $table->timestamps();
         });

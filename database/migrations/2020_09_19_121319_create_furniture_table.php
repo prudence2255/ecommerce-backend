@@ -16,6 +16,7 @@ class CreateFurnitureTable extends Migration
         Schema::create('furniture', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('furniture_type');
             $table->timestamps();
         });

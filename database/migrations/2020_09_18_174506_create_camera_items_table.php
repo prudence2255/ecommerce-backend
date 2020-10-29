@@ -16,6 +16,7 @@ class CreateCameraItemsTable extends Migration
         Schema::create('camera_items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->bigInteger('camera_type_id')->unsigned()->index();
             $table->bigInteger('camera_brand_id')->unsigned()->index();
             $table->timestamps();

@@ -16,6 +16,7 @@ class CreateClothingTable extends Migration
         Schema::create('clothing', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('gender');
             $table->timestamps();
         });

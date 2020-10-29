@@ -15,7 +15,7 @@ class CreateMotorModelsTable extends Migration
     {
         Schema::create('motor_models', function (Blueprint $table) {
             $table->id();
-            $table->string('motor_brand_id');
+            $table->bigInteger('motor_brand_id')->unsigned()->index();
             $table->string('model');
             $table->string('slug');
             $table->timestamps();

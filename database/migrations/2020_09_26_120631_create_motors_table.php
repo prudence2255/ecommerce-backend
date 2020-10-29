@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFootwearsTable extends Migration
+class CreateMotorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateFootwearsTable extends Migration
      */
     public function up()
     {
-        Schema::create('footwears', function (Blueprint $table) {
+        Schema::create('motors', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
             $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
-            $table->string('gender');
+            $table->bigInteger('motor_brand_id')->unsigned()->index();
+            $table->bigInteger('motor_model_id')->unsigned()->index();
+            $table->string('model_year');
+            $table->string('mileage');
+            $table->string('edition');
+            $table->string('engine_capacity');
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ class CreateFootwearsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('footwears');
+        Schema::dropIfExists('motors');
     }
 }

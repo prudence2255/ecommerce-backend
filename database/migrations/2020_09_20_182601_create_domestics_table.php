@@ -16,6 +16,7 @@ class CreateDomesticsTable extends Migration
         Schema::create('domestics', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('service_type');
             $table->timestamps();
         });

@@ -20,12 +20,12 @@ class CategoryController extends Controller
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
-        return response()->json(['data' => $this->option_transform($categories)], 200);
+        return response()->json(['data' => $this->tag_transform($categories, 'name')], 200);
     }
 
     public function categories(){
         $categories = Category::orderBy('updated_at', 'DESC')->get();
-        return response()->json(['data' => $this->option_transform($categories)], 200);
+        return response()->json(['data' => $this->tag_transform($categories, 'name')], 200);
     }
     /**
      * Store a newly created resource in storage.

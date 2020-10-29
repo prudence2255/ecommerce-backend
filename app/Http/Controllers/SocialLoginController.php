@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Auth; 
-use DB;
+use Illuminate\Support\Facades\DB;
 class SocialLoginController extends Controller
 {
 
@@ -20,7 +20,7 @@ public function callback(Request $request, $provider)
 {
      if($request->provider && $request->token){
         $getInfo = Socialite::driver($provider)->stateless()->userFromToken($request->token);
-        $socialLogin = $this->createUser($getInfo,$provider);
+        $socialLogin = $this->createUser($getInfo, $provider);
 
         if($socialLogin){
           $token =  $socialLogin->customer->createToken('token')->accessToken; 
@@ -42,27 +42,27 @@ public function callback(Request $request, $provider)
      }    
  
 }
-function createUser($getInfo,$provider){
- 
- $socialLogin = Social::where('provider_id', $getInfo->id)->first();
- 
- if (!$socialLogin) {
-     $customer = Customer::create([
-        'name'     => $getInfo->name,
-        'email'    => $getInfo->email ?? $getInfo->id,
-        'provider' => $provider,
-        'password' => Hash::make(Str::random(24)),
-        'uid' => IdGenerator::generate(['table' => 'users','field' =>'uid', 
-                                     'length' => 6, 'prefix' => date('y')]),
-    ]);
-    if($customer){
-      $socialLogin = Social::create([
-        'customer_id' => $customer->id,
-        'provider_name' => $provider,
-        'provider_id' => $getInfo->id
-    ]);
-    }
-  }
+function createUser($getInfo, $provider){
+  $socialLogin = Social::where('provider_id', $getInfo->id)->first();
+ DB::transaction(function() use($socialLogin, $getInfo, $provider) {
+  if (!$socialLogin) {
+    $customer = Customer::create([
+       'name'     => $getInfo->name,
+       'email'    => $getInfo->email ?? $getInfo->id,
+       'provider' => $provider,
+       'password' => Hash::make(Str::random(24)),
+       'uid' => IdGenerator::generate(['table' => 'users','field' =>'uid', 
+                                    'length' => 6, 'prefix' => date('y')]),
+   ]);
+   if($customer){
+     $socialLogin = Social::create([
+       'customer_id' => $customer->id,
+       'provider_name' => $provider,
+       'provider_id' => $getInfo->id
+   ]);
+   }
+ }
+ });
   return $socialLogin;
 }
 

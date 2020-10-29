@@ -7,7 +7,9 @@ use App\Category;
 use App\Location;
 use Illuminate\Http\Request;
 use App\Http\Traits\OptionTrait;
-use App\Http\Classes\CategoryType;
+use App\Http\Classes\StoreClass;
+use App\Http\Classes\UpdateClass;
+use App\Http\Classes\ShowClass;
 use Illuminate\Support\Facades\DB;
 use Image;
 
@@ -15,8 +17,6 @@ use Image;
 class AdController extends Controller
 {
     use OptionTrait;
-
-    public $ad;
     /**
      * Display a listing of the resource.
      *
@@ -35,84 +35,10 @@ class AdController extends Controller
      */
     public function store(Request $request)
     {
-            $requestAll = $request;
-            $categoryType = new CategoryType();
-            DB::transaction(function () use ($requestAll, $categoryType){
-                $categoryType->main_data($requestAll);
-                 switch ($requestAll->category) {
-                case 'Mobile Phones':
-                     $this->ad = $categoryType->mobile_phone($requestAll);  
-                    break;
-                case 'Computers & Tablets':
-                    $this->ad = $categoryType->computer($requestAll);
-                     break;
-                case 'Computer Accessories':  
-                    $this->ad = $categoryType->computer_item($requestAll);
-                    break; 
-                case 'Audio & Mp3':  
-                    $this->ad = $categoryType->audio_type($requestAll);
-                    break;  
-                 case 'Tvs':  
-                     $this->ad = $categoryType->tv($requestAll);
-                     break; 
-                case 'Cameras & Camcorders':  
-                    $this->ad = $categoryType->camera_type($requestAll);
-                    break;
-                 case 'Tv & Video Accessories':  
-                    $this->ad = $categoryType->tv_item($requestAll);
-                    break;   
-                case 'Beauty Products':  
-                     $this->ad = $categoryType->ceauty($requestAll);
-                    break;
-                 case 'Clothing & Fashion':  
-                    $this->ad = $categoryType->clothing($requestAll);
-                    break;  
-                            
-                case 'Shoes & Footwear':  
-                     $this->ad = $categoryType->footwear($requestAll);
-                     break;  
-                case 'Furniture':  
-                    $this->ad = $categoryType->furniture($requestAll);
-                     break; 
-                 case 'Electricity, AC & Bathroom':  
-                    $this->ad = $categoryType->electricity($requestAll);
-                    break; 
-                case 'Home Appliances':  
-                    $this->ad = $categoryType->home_ap($requestAll);
-                    break; 
-                case 'Houses':  
-                    $this->ad = $categoryType->house($requestAll);
-                    break;
-                case 'Commercial Property':  
-                    $this->ad = $categoryType->commercial_prop($requestAll);
-                    break;
-                case 'Home Appliances':  
-                    $this->ad = $categoryType->home_ap($requestAll);
-                    break;
-                 case 'Land':  
-                    $this->ad = $categoryType->land($requestAll);
-                    break;  
-                 case 'Apartments':  
-                    $this->ad = $categoryType->apartment($requestAll);
-                    break;  
-                case 'Trade Services':  
-                     $this->ad = $categoryType->trade($requestAll);
-                    break;  
-                case 'Events & Hospitality':  
-                    $this->ad = $categoryType->event($requestAll);
-                    break;  
-                 case 'Domestic & Personal Services':  
-                     $this->ad = $categoryType->domestic($requestAll);
-                    break;  
-                case 'Health & Lifestyle':  
-                    $this->ad = $categoryType->health($requestAll);
-                    break;         
-                default:
-                    $this->ad = $categoryType->main_data($requestAll);
-                    break;
-            }
-            });
-           return response()->json($this->ad);         
+        $data = new StoreClass;
+        $results = $data->store_data($request);
+       
+        return response()->json($results);
     }
 
     /**
@@ -123,7 +49,15 @@ class AdController extends Controller
      */
     public function show(Ad $ad)
     {
-        //
+        $data = new ShowClass;
+        $results = $data->show_data($ad);
+        $ad->child_category;
+         $ad->child_location;
+         $ad->parent_location;
+         $ad->parent_category;
+        $ad->customer;
+        
+        return response()->json($results);
     }
 
     /**
@@ -135,7 +69,11 @@ class AdController extends Controller
      */
     public function update(Request $request, Ad $ad)
     {
-        //
+        $ad->slug = null;
+        $data = new UpdateClass;
+        $results = $data->update_data($request, $ad);
+
+        return response()->json($results);
     }
 
     /**
@@ -146,7 +84,9 @@ class AdController extends Controller
      */
     public function destroy(Ad $ad)
     {
-        //
+        $ad->delete_images();
+        $ad->delete();
+        return response()->json(['message' => 'Ad deleted successfully'], 200);
     }
 
     public function category_location(){
@@ -212,5 +152,11 @@ public function create_image($requestPath, $path, $width, $height){
         ], 200);
  }  
  
- 
+ //display specific user resource
+
+ public function customer_ads(Request $request){
+     $ads = Ad::where('customer_id', $request->user()->id)->orderBy('updated_at', 'DESC')->paginate(15);
+
+     return response()->json($ads);
+ }
 }

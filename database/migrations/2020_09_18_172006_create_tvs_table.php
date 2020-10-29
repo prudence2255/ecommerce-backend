@@ -17,6 +17,7 @@ class CreateTvsTable extends Migration
             $table->id();
             $table->bigInteger('tv_brand_id')->unsigned()->index();
             $table->bigInteger('ad_id')->unsigned()->index();
+            $table->foreign('ad_id')->references('id')->on('ads')->onDelete('cascade');
             $table->string('model');
             $table->timestamps();
         });

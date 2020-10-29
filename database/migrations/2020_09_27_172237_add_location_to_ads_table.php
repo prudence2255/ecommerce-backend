@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSlugToMobileFeaturesTable extends Migration
+class AddLocationToAdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSlugToMobileFeaturesTable extends Migration
      */
     public function up()
     {
-        Schema::table('mobile_features', function (Blueprint $table) {
-            $table->string('slug');
+        Schema::table('ads', function (Blueprint $table) {
+            $table->string('location');
         });
     }
 
@@ -25,8 +25,8 @@ class AddSlugToMobileFeaturesTable extends Migration
      */
     public function down()
     {
-        Schema::table('mobile_features', function (Blueprint $table) {
-            $table->dropColumn('slug')->after('feature');
+        Schema::table('ads', function (Blueprint $table) {
+            $table->dropColumn('location');
         });
     }
 }

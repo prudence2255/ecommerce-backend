@@ -36,6 +36,8 @@ Route::group(['middleware' => 'auth:customer'], function() {
 Route::group(['middleware' => 'auth:customer'], function(){
     Route::apiResource('mobile-phones', 'MobileController');
     Route::apiResource('ads', 'AdController');
+    Route::get('customer-ads', 'AdController@customer_ads');
+    Route::get('show-ad/{ad}', 'AdController@show');
     Route::get('category-location', 'AdController@category_location');
     Route::post('image-upload', 'AdController@images');
 });
@@ -55,26 +57,26 @@ Route::group([], function(){
     Route::apiResource('mobile-models', 'MobileModelController');
     Route::apiResource('computer-brands', 'ComputerBrandController');
     Route::apiResource('computer-types', 'ComputerTypeController');
-    Route::apiResource('mobile-features', 'MobileFeatureController');
     Route::apiResource('audio-types', 'AudioMp3TypeController');
     Route::apiResource('camera-brands', 'CameraCamcorderBrandController');
     Route::apiResource('camera-types', 'CameraCamcorderTypeController');
     Route::apiResource('computer-accessories', 'ComputerAccessoryTypeController');
     Route::apiResource('tv-brands', 'TvBrandController');
     Route::apiResource('tv-accessories', 'TvVideoAccessoryController');
-    Route::apiResource('car-bodies', 'CarBodyController');
     Route::apiResource('car-brands', 'CarBrandController');
-    Route::apiResource('car-fuels', 'CarFuelController');
     Route::apiResource('car-models', 'CarModelController');
-    Route::apiResource('car-transmissions', 'CarTransmissionController');
     Route::apiResource('motor-brands', 'MotorBrandController');
     Route::apiResource('motor-models', 'MotorModelController');
     Route::apiResource('auto-parts', 'AutoPartController');
     Route::apiResource('property', 'PropertyController');
-    Route::apiResource('home-types', 'HomeTypeController');
-    Route::apiResource('parent-homes', 'ParentHomeController');
-    Route::apiResource('parent-services', 'ParentServiceController');
-    Route::apiResource('service-types', 'ServiceTypeController');
     Route::get('all-categories', 'CategoryController@categories');
     Route::get('all-locations', 'LocationController@locations');
+});
+
+Route::group([], function() {
+  Route::get('main-categories', 'FrontendController@main_categories'); 
+  Route::get('recent-ads', 'FrontendController@recent_ads'); 
+  Route::post('all-ads', 'FrontendController@all_ads');
+  Route::get('category-locations', 'FrontendController@category_locations'); 
+  Route::get('view-ad/{ad}', 'FrontendController@show');   
 });
