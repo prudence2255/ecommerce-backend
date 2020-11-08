@@ -27,6 +27,7 @@ Route::group([], function() {
 
 Route::group(['middleware' => 'auth:customer'], function() {
     Route::apiResource('customers', 'CustomerController');
+    Route::put('update-customer', 'CustomerController@update');
     Route::get('login-customer', 'CustomerController@login_customer');
     Route::get('customer-logout', 'CustomerController@logout');   
 });

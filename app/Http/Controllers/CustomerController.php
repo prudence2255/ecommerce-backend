@@ -111,6 +111,7 @@ class CustomerController extends Controller
 //update user api
 
     public function update(Request $request) {
+        $request->validate(['name' => 'string|required']);
         $customer = auth::guard('customer')->user();
         $customer->slug = null;
         $customer->update(['name' => $request->name]);
