@@ -23,6 +23,8 @@ Route::group([], function() {
     Route::post('login/{provider}/callback', 'SocialLoginController@callback');
     Route::post('customer-login', 'CustomerController@login');
     Route::post('customer-register', 'CustomerController@register');
+    Route::post('create-reset', 'PasswordResetController@create');
+    Route::put('password-reset', 'PasswordResetController@reset');
 });
 
 Route::group(['middleware' => 'auth:customer'], function() {
@@ -41,6 +43,7 @@ Route::group(['middleware' => 'auth:customer'], function(){
     Route::get('show-ad/{ad}', 'AdController@show');
     Route::get('category-location', 'AdController@category_location');
     Route::post('image-upload', 'AdController@images');
+    Route::put('update-password', 'PasswordResetController@update_password');
 });
 
 Route::group([], function() {
