@@ -44,7 +44,7 @@ class PasswordReset extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = 'https://digishoping.enthusiastgh.com/ad/password-reset?token='.$this->token;
+        $url = 'https://digishoping.herokuapp.com/ad/password-reset?token='.$this->token;
         return (new MailMessage)
                     ->subject('Reset your password on digishoping.herokuapp.com')
                     ->greeting('Hello '.$this->user->name)
