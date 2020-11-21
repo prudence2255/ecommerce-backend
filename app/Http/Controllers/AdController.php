@@ -108,7 +108,7 @@ public function create_image($requestPath, $path, $width, $height){
  public function images(Request $request){
 
     $request->validate([
-        'photo' =>  'required|mimes:jpeg,jpg,png'
+        'photo' =>  'required|mimes:jpeg,jpg,png,jfif'
     ]);
      $email = $request->user()->email; 
     $image = $request->photo;

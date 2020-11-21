@@ -5,13 +5,15 @@
 use App\Ad;
 use App\Category;
 use App\Location;
+use App\Customer;
 
 
 use Faker\Generator as Faker;
 
 
  $factory->define(Ad::class, function (Faker $faker) {
-
+    $customers = Customer::all()->pluck('id')->all();
+    $customer_id = collect($customers)->random();
     $main_cat = Category::whereNull('parent_id')->get();
 
     $main_loc = Location::whereNull('parent_id')->get();
@@ -58,7 +60,7 @@ $isCondition = $collection->contains($child_cat_name);
     return [
         'title' => $title,
         'uuid' => 200003,
-        'customer_id' => 1,
+        'customer_id' => $customer_id,
         'price' => $price,
         'description'=> $faker->paragraph,
         'condition' => $isCondition ? $condition : null,
