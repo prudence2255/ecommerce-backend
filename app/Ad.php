@@ -22,6 +22,18 @@ class Ad extends Model
         'images' => 'array'
     ];
 
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+    public function getRouteKeyName(){
+        return 'slug';
+    }
+
     public function setCategoryAttribute($value){
         $this->attributes['category'] = $this->name_transform($value);
     }
@@ -127,15 +139,5 @@ class Ad extends Model
                return $this->hasMany('App\Beauty');
            }
     
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
-    public function getRouteKeyName(){
-        return 'slug';
-    }
+   
 }

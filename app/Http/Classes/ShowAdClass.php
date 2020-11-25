@@ -32,7 +32,6 @@ class ShowAdClass {
     }
 
     public function land(){
-
       if($this->ad){
         $item = Land::where('ad_id', $this->ad->id)->get();
          return ['ad' => $this->ad, 'item' => $item];

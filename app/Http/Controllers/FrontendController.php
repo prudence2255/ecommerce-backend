@@ -87,8 +87,6 @@ class FrontendController extends Controller
     return response()->json($ads->paginate(20));
     }
 
-
-
     public function recent_ads(){
         $ads = Ad::orderBy('updated_at', 'DESC')->limit(10)->get();
         return response()->json($ads);
@@ -99,7 +97,7 @@ class FrontendController extends Controller
     {
         $data = new ShowClass;
         $results = $data->show_data($ad);
-        $similar_ads = Ad::where('category', $ad->category)->limit(12)
+        $similar_ads = Ad::whereNotIn('slug', [$ad->slug])->where('category', $ad->category)->limit(12)
                         ->orderBy('updated_at', 'DESC')->get();
         $ad->child_category;
         $ad->child_location;
