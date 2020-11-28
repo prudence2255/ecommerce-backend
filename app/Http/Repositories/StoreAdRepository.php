@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Classes;
+namespace App\Http\Repositories;
 
 use App\Apartment;
 use App\House;
@@ -17,12 +17,17 @@ use App\Car;
 use App\Motor;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
-class StoreCategory {
+class StoreAdRepository {
    
-    public $ad;
+    protected $data;
+    protected $ad;
 
-    public function main_data($request){
-        $request->validate([
+    public function __construct($data){
+      $this->data = $data;
+    }
+    
+    public function main_data(){
+        $this->data->validate([
             'title' => 'required|string',
             'description' => 'required|string',
             'price' => 'required',
@@ -32,33 +37,33 @@ class StoreCategory {
 
        $this->ad = Ad::Create(
            [
-            'parent_category_id' => $request->parent_category_id,
-            'child_category_id' => $request->child_category_id,
-            'parent_location_id' => $request->parent_location_id,
-            'child_location_id' => $request->child_location_id,
-            'main_category' => $request->main_category,
-            'main_location' => $request->main_location,
-            'customer_id' => $request->user()->id,
-            'category' => $request->category,
-            'location' => $request->location,
-            'title' => $request->title,
-            'condition' => $request->condition,
-            'description' => $request->description,
-            'price' => $request->price,
-            'images' => $request->images,
-            'negotiable' => $request->negotiable,
+            'parent_category_id' => $this->data->parent_category_id,
+            'child_category_id' => $this->data->child_category_id,
+            'parent_location_id' => $this->data->parent_location_id,
+            'child_location_id' => $this->data->child_location_id,
+            'main_category' => $this->data->main_category,
+            'main_location' => $this->data->main_location,
+            'customer_id' => $this->data->user()->id,
+            'category' => $this->data->category,
+            'location' => $this->data->location,
+            'title' => $this->data->title,
+            'condition' => $this->data->condition,
+            'description' => $this->data->description,
+            'price' => $this->data->price,
+            'images' => $this->data->images,
+            'negotiable' => $this->data->negotiable,
             'uuid' => IdGenerator::generate(['table' => 'users','field' =>'uid', 
                                         'length' => 6, 'prefix' => date('y')])
         ]);
         if($this->ad){
-          $customer = Customer::where('id', $request->user()->id)->first();
-          $customer->update(['contact' => $request->contact]);
+          $customer = Customer::where('id', $this->data->user()->id)->first();
+          $customer->update(['contact' => $this->data->contact]);
         }
       return $this->ad;  
     }
 
-    public function apartment($request){
-        $request->validate([
+    public function apartment(){
+        $this->data->validate([
             'beds' => 'required',
             'baths' => 'required',
             'landmark' => 'nullable|string',
@@ -67,18 +72,18 @@ class StoreCategory {
 
       if($this->ad){
         $apart = Apartment::create([
-            'beds' => $request->beds,
-            'baths' => $request->baths,
+            'beds' => $this->data->beds,
+            'baths' => $this->data->baths,
             'ad_id' => $this->ad->id,
-            'landmark' => $request->landmark,
-            'size' => $request->size,
+            'landmark' => $this->data->landmark,
+            'size' => $this->data->size,
         ]);
         return $apart->ad;
       }
     }
 
-    public function land($request){
-        $request->validate([
+    public function land(){
+        $this->data->validate([
             'land_type' => 'required',
             'landmark' => 'nullable|string',
             'size' => 'required',
@@ -86,17 +91,17 @@ class StoreCategory {
 
       if($this->ad){
         $land = Land::create([
-            'land_type' => $request->land_type,
+            'land_type' => $this->data->land_type,
             'ad_id' => $this->ad->id,
-            'landmark' => $request->landmark,
-            'size' => $request->size,
+            'landmark' => $this->data->landmark,
+            'size' => $this->data->size,
         ]);
         return $land->ad;
       }
     }
 
-    public function commercial_prop($request){
-        $request->validate([
+    public function commercial_prop(){
+        $this->data->validate([
             'property_id' => 'required',
             'landmark' => 'nullable|string',
             'size' => 'required',
@@ -104,17 +109,17 @@ class StoreCategory {
 
       if($this->ad){
         $com = CommercialProp::create([
-            'property_id' => $request->property_id,
+            'property_id' => $this->data->property_id,
             'ad_id' => $this->ad->id,
-            'landmark' => $request->landmark,
-            'size' => $request->size,
+            'landmark' => $this->data->landmark,
+            'size' => $this->data->size,
         ]);
         return $com->ad;
       }
     }
 
-    public function house($request){
-        $request->validate([
+    public function house(){
+        $this->data->validate([
             'beds' => 'required',
             'baths' => 'required',
             'landmark' => 'nullable|string',
@@ -123,74 +128,74 @@ class StoreCategory {
 
       if($this->ad){
         $house = House::create([
-            'beds' => $request->beds,
-            'baths' => $request->baths,
+            'beds' => $this->data->beds,
+            'baths' => $this->data->baths,
             'ad_id' => $this->ad->id,
-            'landmark' => $request->landmark,
-            'size' => $request->size,
+            'landmark' => $this->data->landmark,
+            'size' => $this->data->size,
         ]);
         return $house->ad;
       }
     }
 
-    public function trade($request){
-        $request->validate([
+    public function trade(){
+        $this->data->validate([
             'service_type' => 'required',
         ]);
 
       if($this->ad){
         $trade = Trade::create([
-            'service_type' => $request->service_type,
+            'service_type' => $this->data->service_type,
             'ad_id' => $this->ad->id,
         ]);
         return $trade->ad;
       }
     }
 
-    public function domestic($request){
-        $request->validate([
+    public function domestic(){
+        $this->data->validate([
             'service_type' => 'required',
         ]);
 
       if($this->ad){
         $dom = Domestic::create([
-            'service_type' => $request->service_type,
+            'service_type' => $this->data->service_type,
             'ad_id' => $this->ad->id,
         ]);
         return $dom->ad;
       }
     }
-    public function event($request){
+    public function event(){
         
-        $request->validate([
+        $this->data->validate([
             'service_type' => 'required',
         ]);
 
       if($this->ad){
         $event = Event::create([
-            'service_type' => $request->service_type,
+            'service_type' => $this->data->service_type,
             'ad_id' => $this->ad->id,
         ]);
         return $event->ad;
       }
     }
     
-    public function health($request){
-        $request->validate([
+    public function health(){
+        $this->data->validate([
             'service_type' => 'required',
         ]);
 
       if($this->ad){
         $health = Health::create([
-            'service_type' => $request->service_type,
+            'service_type' => $this->data->service_type,
             'ad_id' => $this->ad->id,
         ]);
         return $health->ad;
       }
     }
 
-    public function car($request){
-      $request->validate([
+    public function car(){
+      $this->data->validate([
         'car_brand_id' => 'required',
         'car_model_id' => 'required',
         'model_year' => 'required|string',
@@ -202,22 +207,22 @@ class StoreCategory {
       ]);
     if($this->ad){
       $car = Car::create([
-        'car_brand_id' => $request->car_brand_id,
-        'car_model_id' => $request->car_model_id,
-        'model_year' => $request->model_year,
-        'mileage' => $request->mileage,
-        'transmission' => $request->transmission,
-        'fuel_type' => $request->fuel_type,
-        'edition' => $request->edition,
-        'engine_capacity' => $request->engine_capacity,
+        'car_brand_id' => $this->data->car_brand_id,
+        'car_model_id' => $this->data->car_model_id,
+        'model_year' => $this->data->model_year,
+        'mileage' => $this->data->mileage,
+        'transmission' => $this->data->transmission,
+        'fuel_type' => $this->data->fuel_type,
+        'edition' => $this->data->edition,
+        'engine_capacity' => $this->data->engine_capacity,
          'ad_id' => $this->ad->id,
       ]);
       return $car->ad;
     }
   }
   
-  public function motor($request){
-    $request->validate([
+  public function motor(){
+    $this->data->validate([
       'motor_brand_id' => 'required',
       'motor_model_id' => 'required',
       'model_year' => 'required|string',
@@ -227,26 +232,26 @@ class StoreCategory {
     ]);
   if($this->ad){
     $motor = Motor::create([
-      'motor_brand_id' => $request->motor_brand_id,
-      'motor_model_id' => $request->motor_model_id,
-      'model_year' => $request->model_year,
-      'mileage' => $request->mileage,
-      'edition' => $request->edition,
-      'engine_capacity' => $request->engine_capacity,
+      'motor_brand_id' => $this->data->motor_brand_id,
+      'motor_model_id' => $this->data->motor_model_id,
+      'model_year' => $this->data->model_year,
+      'mileage' => $this->data->mileage,
+      'edition' => $this->data->edition,
+      'engine_capacity' => $this->data->engine_capacity,
        'ad_id' => $this->ad->id,
     ]);
     return $motor->ad;
   }
 }
 
-public function auto_part($request){
-  $request->validate([
+public function auto_part(){
+  $this->data->validate([
       'item_type_id' => 'required',
   ]);
 
 if($this->ad){
   $part = Part::create([
-      'item_type_id' => $request->item_type_id,
+      'item_type_id' => $this->data->item_type_id,
       'ad_id' => $this->ad->id,
   ]);
   return $part->ad;

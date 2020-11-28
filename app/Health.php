@@ -11,8 +11,6 @@ class Health extends Model
         'ad_id',
     ];
 
-
-
 public function ad(){
 return $this->belongsTo('App\Ad');
 }

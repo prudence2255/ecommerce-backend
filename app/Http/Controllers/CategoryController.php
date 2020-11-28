@@ -91,6 +91,12 @@ class CategoryController extends Controller
         if($category->children){
             $category->children()->delete();
         }
+        if($category->ads){
+            $category->ads()->delete();
+        }
+        if($category->adds){
+            $category->adds()->delete();
+        }
         $category->delete();
         return response()->json(['message' => 'Category deleted successfully'], 200);
     }

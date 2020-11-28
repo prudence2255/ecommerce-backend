@@ -12,7 +12,7 @@ class Apartment extends Model
 
 
 public function ad(){
-return $this->belongsTo('App\Ad');
+    return $this->belongsTo('App\Ad');
 }
 
 }

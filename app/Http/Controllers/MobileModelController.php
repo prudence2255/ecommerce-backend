@@ -87,6 +87,12 @@ class MobileModelController extends Controller
     public function destroy(MobileModel $mobileModel)
     {
         if($mobileModel->mobile_phones){
+            $mobileModel->mobile_phones->map(function($mobile){
+                if($mobile->ad){
+                    $mobile->ad()->delete();
+                }
+                
+         });
             $mobileModel->mobile_phones()->delete();
         }
         $mobileModel->delete();

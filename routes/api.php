@@ -60,7 +60,6 @@ Route::group([], function(){
     Route::apiResource('mobile-brands', 'MobileBrandController');
     Route::apiResource('mobile-models', 'MobileModelController');
     Route::apiResource('computer-brands', 'ComputerBrandController');
-    Route::apiResource('computer-types', 'ComputerTypeController');
     Route::apiResource('audio-types', 'AudioMp3TypeController');
     Route::apiResource('camera-brands', 'CameraCamcorderBrandController');
     Route::apiResource('camera-types', 'CameraCamcorderTypeController');
@@ -77,10 +76,10 @@ Route::group([], function(){
     Route::get('all-locations', 'LocationController@locations');
 });
 
-Route::group([], function() {
+Route::group([], function() { 
   Route::get('main-categories', 'FrontendController@main_categories'); 
   Route::get('recent-ads', 'FrontendController@recent_ads'); 
-  Route::post('all-ads', 'FrontendController@all_ads');
+  Route::post('all-ads', 'FrontendController@ads');
   Route::get('category-locations', 'FrontendController@category_locations'); 
   Route::get('view-ad/{ad}', 'FrontendController@show');   
 });

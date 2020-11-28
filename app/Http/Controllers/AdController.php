@@ -7,9 +7,10 @@ use App\Category;
 use App\Location;
 use Illuminate\Http\Request;
 use App\Http\Traits\OptionTrait;
-use App\Http\Classes\StoreClass;
-use App\Http\Classes\UpdateClass;
-use App\Http\Classes\ShowClass;
+use App\Http\Repositories\StoreRepository;
+use App\Http\Repositories\UpdateRepository;
+use App\Http\Repositories\ShowRepository;
+use App\Http\Repositories\ImageRepository;
 use Illuminate\Support\Facades\DB;
 use Image;
 
@@ -27,16 +28,23 @@ class AdController extends Controller
         //
     }
 
+    public function deleteItems() {
+        $items = Ad::where('category', 'Mobile Phones')->get();
+        $items->map(function($item){
+            if(!$item->mobile_phone){
+                $item->delete();
+            }
+        });
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, StoreRepository $storeRepository)
     {
-        $data = new StoreClass;
-        $results = $data->store_data($request);
+        $results = $storeRepository->store_data($request);
        
         return response()->json($results);
     }
@@ -47,10 +55,10 @@ class AdController extends Controller
      * @param  \App\Ad  $ad
      * @return \Illuminate\Http\Response
      */
-    public function show(Ad $ad)
+    public function show(Ad $ad, ShowRepository $showRepository)
     {
-        $data = new ShowClass;
-        $results = $data->show_data($ad);
+       
+        $results = $showRepository->show_data($ad);
         $ad->child_category;
          $ad->child_location;
          $ad->parent_location;
@@ -67,11 +75,9 @@ class AdController extends Controller
      * @param  \App\Ad  $ad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ad $ad)
+    public function update(Request $request, Ad $ad, UpdateRepository $updateRepository)
     {
-        $ad->slug = null;
-        $data = new UpdateClass;
-        $results = $data->update_data($request, $ad);
+        $results = $updateRepository->update_data($ad, $request);
 
         return response()->json($results);
     }
@@ -98,65 +104,19 @@ class AdController extends Controller
         ]);
     }
 
-public function create_image($requestPath, $path, $width, $height){
-        $img = Image::make($requestPath)->resize($width, $height, function($constraint){
-            $constraint->aspectRatio();
-        });
-        $img->save($path);
-    } 
 
- public function images(Request $request){
 
-    $request->validate([
-        'photo' =>  'required|mimes:jpeg,jpg,png,jfif'
-    ]);
-     $email = $request->user()->email; 
-    $image = $request->photo;
-    $imageFullName = $image->getClientOriginalName();
-    $imageName = pathinfo($imageFullName, PATHINFO_FILENAME);
-    $imageExt = $image->getClientOriginalExtension();
+        public function images(Request $request, ImageRepository $imageRepository){
 
-    $xs = $imageName.$email.'xs'.time().'.'.$imageExt;
-    $sm = $imageName.$email.'sm'.time().'.'.$imageExt;
-    $md = $imageName.$email.'md'.time().'.'.$imageExt;
-    $lg = $imageName.$email.'lg'.time().'.'.$imageExt;
-
-    $xsmall = public_path('storage/photos/'.$xs);
-    $small = public_path('storage/photos/'.$sm);
-    $medium = public_path('storage/photos/'.$md);
-    $large = public_path('storage/photos/'.$lg);
-    
-    
-    $this->create_image(
-        $image->getRealPath(), $xsmall, 300, 150
-    );
-    $this->create_image(
-        $image->getRealPath(), $small, 500, 315
-    );
-    $this->create_image(
-        $image->getRealPath(), $medium, 768, 415
-    );
-    $this->create_image(
-        $image->getRealPath(), $large, 1200, 700
-    );
-    
-
-    return response([
-        'data' => [
-            'xsmall' => url('storage/photos/'.$xs),
-            'small' => url('storage/photos/'.$sm),
-            'medium' => url('storage/photos/'.$md),
-           'large' =>  url('storage/photos/'.$lg),
-        ],
-         'message' => 'Image uploaded successfully',
-        ], 200);
- }  
+        $image = $imageRepository->process_image($request);
+        return response(['data' => $image]);
+     }  
  
- //display specific user resource
+        //display specific user resource
 
- public function customer_ads(Request $request){
-     $ads = Ad::where('customer_id', $request->user()->id)->orderBy('updated_at', 'DESC')->paginate(15);
+        public function customer_ads(Request $request){
+         $ads = Ad::where('customer_id', $request->user()->id)->orderBy('updated_at', 'DESC')->paginate(15);
 
-     return response()->json($ads);
+        return response()->json($ads);
  }
 }

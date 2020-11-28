@@ -12,11 +12,11 @@ class AudioItem extends Model
 
 
 public function ad(){
-return $this->belongsTo('App\Ad');
+    return $this->belongsTo('App\Ad');
 }
 
 public function audio_type(){
-return $this->belongsTo('App\AudioType');
+    return $this->belongsTo('App\AudioType');
 }
 
 

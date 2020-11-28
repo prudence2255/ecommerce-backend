@@ -79,12 +79,23 @@ class MobileBrandController extends Controller
      */
     public function destroy(MobileBrand $mobileBrand)
     {
-        if($mobileBrand->mobile_phones){
-            $mobileBrand->mobile_phones()->delete();
-        }
         if($mobileBrand->mobile_models){
             $mobileBrand->mobile_models()->delete();
         }
+
+        if($mobileBrand->mobile_phones){
+            $mobileBrand->mobile_phones->map(function($mobile){
+                if($mobile->ad){
+                    $mobile->ad()->delete();
+                }
+                
+         });
+
+            $mobileBrand->mobile_phones()->delete();
+        }
+
+        
+
         $mobileBrand->delete();
         return response()->json(['message' => 'mobile brand deleted successfully'], 200);
     }

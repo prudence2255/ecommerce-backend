@@ -19,6 +19,7 @@ class SocialLoginController extends Controller
 public function callback(Request $request, $provider)
 {
      if($request->provider && $request->token){
+       
         $getInfo = Socialite::driver($provider)->stateless()->userFromToken($request->token);
         $socialLogin = $this->createUser($getInfo, $provider);
 
@@ -42,6 +43,7 @@ public function callback(Request $request, $provider)
      }    
  
 }
+
 function createUser($getInfo, $provider){
   $socialLogin = Social::where('provider_id', $getInfo->id)->first();
  DB::transaction(function() use($socialLogin, $getInfo, $provider) {

@@ -121,12 +121,16 @@ class CustomerController extends Controller
         ],  $this->successStatus);
     }
 
+
+    
     public function destroy(Customer $customer) {
         $customer->delete();
         return response()->json([
             'message' => 'User deleted successfully'
         ],  $this->successStatus);
     }
+
+
 
      public function logout(Request $request) {
        $token = $request->user()->token();

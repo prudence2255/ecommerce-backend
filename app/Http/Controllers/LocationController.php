@@ -88,6 +88,14 @@ class LocationController extends Controller
         if($location->children){
             $location->children()->delete();
         }
+
+        if($location->ads){
+            $location->ads()->delete();
+        }
+
+        if($location->adds){
+            $location->adds()->delete();
+        }
         $location->delete();
         return response()->json(['message' => 'location deleted successfully'], 200);
     }
