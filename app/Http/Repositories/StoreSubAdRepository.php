@@ -3,25 +3,25 @@
 
 namespace App\Http\Repositories;
 
-use App\Http\Repositories\StoreAdRepository;
 use App\Ad;
-use App\MobilePhone;
-use App\Computer;
-use App\ComputerItem;
-use App\AudioItem;
 use App\Tv;
-use App\TvItem;
-use App\CameraItem;
 use App\Beauty;
-use App\Clothing;
-use App\Electricity;
 use App\HomeAp;
-use App\Furniture;
+use App\TvItem;
+use App\Clothing;
+use App\Computer;
 use App\Footwear;
+use App\AudioItem;
+use App\Furniture;
+use App\CameraItem;
+use App\Electricity;
+use App\MobilePhone;
+use App\ComputerItem;
 use Illuminate\Support\Facades\DB;
+use App\Http\Repositories\StoreAdRepository;
 
 class StoreSubAdRepository extends StoreAdRepository{
-       
+
     public function mobile_phone(){
         $this->data->validate([
             'mobile_brand_id' => 'required',
@@ -72,7 +72,7 @@ class StoreSubAdRepository extends StoreAdRepository{
         return $computer_accessory->ad;
       }
     }
-    
+
     public function audio_item(){
         $this->data->validate([
             'audio_type_id' => 'required',
@@ -103,7 +103,7 @@ class StoreSubAdRepository extends StoreAdRepository{
         return $camera_type->ad;
       }
 
-    }  
+    }
 
     public function tv(){
       $this->data->validate([

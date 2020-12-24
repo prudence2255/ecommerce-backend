@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Http\Traits\OptionTrait;
 use App\Http\Traits\RelationTrait;
+use App\Http\QueryFilters\FilterBuilder;
 
 class Ad extends Model
 {
     use Sluggable;
     use OptionTrait;
     use RelationTrait;
-    
+
     protected $fillable = [
         'images', 'title', 'description', 'price',
          'uuid', 'condition', 'negotiable', 'parent_category_id',
@@ -60,7 +61,7 @@ class Ad extends Model
     public function getLocationAttribute($value){
         return $this->name_transform($value);
     }
-   
+
 
     public function delete_images(){
         if($this->images){
@@ -74,6 +75,13 @@ class Ad extends Model
                 }
         }
     }
-    
-   
+
+    public function scopeFilterBy($query, $filters)
+    {
+        $namespace = 'App\Http\QueryFilters';
+        $filter = new FilterBuilder($query, $filters, $namespace);
+
+        return $filter->apply();
+    }
+
 }

@@ -3,24 +3,28 @@
 
 namespace App\Http\Repositories;
 
-use App\Http\Repositories\ShowAdRepository;
 use App\Ad;
-use App\MobilePhone;
-use App\Computer;
-use App\ComputerItem;
-use App\AudioItem;
 use App\Tv;
-use App\TvItem;
-use App\CameraItem;
 use App\Beauty;
-use App\Clothing;
-use App\Electricity;
 use App\HomeAp;
-use App\Furniture;
+use App\TvItem;
+use App\Clothing;
+use App\Computer;
 use App\Footwear;
+use App\AudioItem;
+use App\Furniture;
+use App\CameraItem;
+use App\Electricity;
+use App\MobilePhone;
+use App\ComputerItem;
+use App\Http\Repositories\ShowAdRepository;
 
 class ShowAdSubRepository extends ShowAdRepository {
-
+    
+/**
+ * display ads sub repository
+ * @param mixed
+ */
     public function mobile_phone(){
       if($this->ad){
         $item = MobilePhone::where('ad_id', $this->ad->id)->with(['mobile_model', 'mobile_brand'])->first();
@@ -42,7 +46,7 @@ class ShowAdSubRepository extends ShowAdRepository {
           return ['ad' => $this->ad, 'item' => $item];
       }
     }
-    
+
     public function audio_item(){
 
       if($this->ad){
@@ -59,7 +63,7 @@ class ShowAdSubRepository extends ShowAdRepository {
           return ['ad' => $this->ad, 'item' => $item];
       }
 
-    }  
+    }
 
     public function tv(){
 
@@ -78,7 +82,7 @@ class ShowAdSubRepository extends ShowAdRepository {
 }
 
 public function beauty(){
-  
+
 if($this->ad){
   $item = Beauty::where('ad_id', $this->ad->id)->first();
     return ['ad' => $this->ad, 'item' => $item];
@@ -86,7 +90,7 @@ if($this->ad){
 }
 
 public function clothing(){
- 
+
 if($this->ad){
   $item = Clothing::where('ad_id', $this->ad->id)->first();
     return ['ad' => $this->ad, 'item' => $item];
@@ -110,7 +114,7 @@ if($this->ad){
 }
 
 public function home_ap(){
- 
+
 if($this->ad){
   $item = HomeAp::where('ad_id', $this->ad->id)->first();
     return ['ad' => $this->ad, 'item' => $item];

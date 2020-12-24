@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use App\Ad;
 use App\Category;
 use App\Location;
 use Illuminate\Http\Request;
 use App\Http\Traits\OptionTrait;
-use App\Http\Repositories\StoreRepository;
-use App\Http\Repositories\UpdateRepository;
+use Illuminate\Support\Facades\DB;
 use App\Http\Repositories\ShowRepository;
 use App\Http\Repositories\ImageRepository;
-use Illuminate\Support\Facades\DB;
-use Image;
+use App\Http\Repositories\StoreRepository;
+use App\Http\Repositories\UpdateRepository;
 
 
 class AdController extends Controller
@@ -45,7 +45,7 @@ class AdController extends Controller
     public function store(Request $request, StoreRepository $storeRepository)
     {
         $results = $storeRepository->store_data($request);
-       
+
         return response()->json($results);
     }
 
@@ -57,14 +57,14 @@ class AdController extends Controller
      */
     public function show(Ad $ad, ShowRepository $showRepository)
     {
-       
+
         $results = $showRepository->show_data($ad);
         $ad->child_category;
          $ad->child_location;
          $ad->parent_location;
          $ad->parent_category;
         $ad->customer;
-        
+
         return response()->json($results);
     }
 
@@ -95,6 +95,10 @@ class AdController extends Controller
         return response()->json(['message' => 'Ad deleted successfully'], 200);
     }
 
+    /**
+     *display listing of categories and locations
+     */
+
     public function category_location(){
         $categories = Category::all();
         $locations = Location::all();
@@ -105,14 +109,17 @@ class AdController extends Controller
     }
 
 
+    /**
+     * store created ad images
+     */
 
         public function images(Request $request, ImageRepository $imageRepository){
 
         $image = $imageRepository->process_image($request);
         return response(['data' => $image]);
-     }  
- 
-        //display specific user resource
+     }
+
+        //display customer ads
 
         public function customer_ads(Request $request){
          $ads = Ad::where('customer_id', $request->user()->id)->orderBy('updated_at', 'DESC')->paginate(15);

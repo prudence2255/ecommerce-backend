@@ -2,23 +2,23 @@
 
 namespace App\Http\Repositories;
 
-use App\Apartment;
-use App\House;
-use App\Land;
-use App\CommercialProp;
 use App\Ad;
-use App\Event;
-use App\Domestic;
-use App\Health;
-use App\Trade;
-use App\Part;
 use App\Car;
+use App\Land;
+use App\Part;
+use App\Event;
+use App\House;
 use App\Motor;
+use App\Trade;
+use App\Health;
 use App\Customer;
+use App\Domestic;
+use App\Apartment;
+use App\CommercialProp;
 
 
 class UpdateAdRepository {
-   
+
     protected $ad;
     protected $data;
 
@@ -57,7 +57,7 @@ class UpdateAdRepository {
           $customer = Customer::where('id', $this->data->user()->id)->first();
           $customer->update(['contact' => $this->data->contact]);
         }
-      return $this->ad;  
+      return $this->ad;
     }
 
     public function apartment(){
@@ -67,7 +67,7 @@ class UpdateAdRepository {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-    
+
       if($this->ad){
         $item = Apartment::where('ad_id', $this->ad->id)->first();
      $item->update([
@@ -87,7 +87,7 @@ class UpdateAdRepository {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-       
+
       if($this->ad){
         $item = Land::where('ad_id', $this->ad->id)->first();
         $item->update([
@@ -106,7 +106,7 @@ class UpdateAdRepository {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-        
+
       if($this->ad){
         $item = CommercialProp::where('ad_id', $this->ad->id)->first();
        $item->update([
@@ -126,7 +126,7 @@ class UpdateAdRepository {
             'landmark' => 'nullable|string',
             'size' => 'required',
         ]);
-        
+
       if($this->ad){
         $item = House::where('ad_id', $this->ad->id)->first();
        $item->update([
@@ -144,7 +144,7 @@ class UpdateAdRepository {
         $this->data->validate([
             'service_type' => 'required',
         ]);
-       
+
       if($this->ad){
         $item = Trade::where('ad_id', $this->ad->id)->first();
       $item->update([
@@ -159,7 +159,7 @@ class UpdateAdRepository {
         $this->data->validate([
             'service_type' => 'required',
         ]);
-        
+
       if($this->ad){
         $item = Domestic::where('ad_id', $this->ad->id)->first();
       $item->update([
@@ -170,11 +170,11 @@ class UpdateAdRepository {
       }
     }
     public function event(){
-        
+
         $this->data->validate([
             'service_type' => 'required',
         ]);
-        
+
       if($this->ad){
         $item = Event::where('ad_id', $this->ad->id)->first();
      $item->update([
@@ -188,7 +188,7 @@ class UpdateAdRepository {
         $this->data->validate([
             'service_type' => 'required',
         ]);
-        
+
       if($this->ad){
         $item = Health::where('ad_id', $this->ad->id)->first();
        $item->update([
@@ -210,7 +210,8 @@ class UpdateAdRepository {
         'engine_capacity' => 'required|string',
         'edition' => 'nullable|string'
       ]);
-     
+
+      
     if($this->ad){
       $item = Car::where('ad_id', $this->ad->id)->first();
     $item->update([
@@ -227,7 +228,7 @@ class UpdateAdRepository {
       return $item->ad;
     }
   }
-  
+
   public function motor(){
     $this->data->validate([
       'motor_brand_id' => 'required',
@@ -237,7 +238,7 @@ class UpdateAdRepository {
       'engine_capacity' => 'required|string',
       'edition' => 'nullable|string'
     ]);
-    
+
   if($this->ad){
     $item = Motor::where('ad_id', $this->ad->id)->first();
     $item->update([
@@ -257,7 +258,7 @@ public function auto_part(){
   $this->data->validate([
       'item_type_id' => 'required',
   ]);
-  
+
 if($this->ad){
   $item = Part::where('ad_id', $this->ad->id)->first();
 $item->update([

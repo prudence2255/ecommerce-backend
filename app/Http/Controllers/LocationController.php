@@ -40,7 +40,7 @@ class LocationController extends Controller
 
        if($location){
            return response()->json(['data' => $location], 200);
-       } 
+       }
     }
 
     /**
@@ -51,7 +51,7 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        
+
     }
 
     /**
@@ -98,5 +98,5 @@ class LocationController extends Controller
         }
         $location->delete();
         return response()->json(['message' => 'location deleted successfully'], 200);
-    }
+     }
 }

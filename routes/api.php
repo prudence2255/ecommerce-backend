@@ -27,17 +27,15 @@ Route::group([], function() {
     Route::put('password-reset', 'PasswordResetController@reset');
 });
 
-Route::group(['middleware' => 'auth:customer'], function() {
-    Route::apiResource('customers', 'CustomerController');
-    Route::put('update-customer', 'CustomerController@update');
-    Route::get('login-customer', 'CustomerController@login_customer');
-    Route::get('customer-logout', 'CustomerController@logout');   
-});
+
 
 
 
 Route::group(['middleware' => 'auth:customer'], function(){
-    Route::apiResource('mobile-phones', 'MobileController');
+    Route::apiResource('customers', 'CustomerController');
+    Route::put('update-customer', 'CustomerController@update');
+    Route::get('login-customer', 'CustomerController@login_customer');
+    Route::get('customer-logout', 'CustomerController@logout');
     Route::apiResource('ads', 'AdController');
     Route::get('customer-ads', 'AdController@customer_ads');
     Route::get('show-ad/{ad}', 'AdController@show');
@@ -46,12 +44,13 @@ Route::group(['middleware' => 'auth:customer'], function(){
     Route::put('update-password', 'PasswordResetController@update_password');
 });
 
+
 Route::group([], function() {
     Route::apiResource('users', 'AdminController');
     Route::post('register', 'AdminController@register');
     Route::get('logout', 'AdminController@logout');
     Route::get('user-details', 'AdminController@user_details');
-    Route::put('make-admin/{user}', 'AdminController@makeAdmin');    
+    Route::put('make-admin/{user}', 'AdminController@makeAdmin');
 });
 
 Route::group([], function(){
@@ -76,10 +75,11 @@ Route::group([], function(){
     Route::get('all-locations', 'LocationController@locations');
 });
 
-Route::group([], function() { 
-  Route::get('main-categories', 'FrontendController@main_categories'); 
-  Route::get('recent-ads', 'FrontendController@recent_ads'); 
+
+Route::group([], function() {
+  Route::get('main-categories', 'FrontendController@main_categories');
+  Route::get('recent-ads', 'FrontendController@recent_ads');
   Route::post('all-ads', 'FrontendController@ads');
-  Route::get('category-locations', 'FrontendController@category_locations'); 
-  Route::get('view-ad/{ad}', 'FrontendController@show');   
+  Route::get('category-locations', 'FrontendController@category_locations');
+  Route::get('view-ad/{ad}', 'FrontendController@show');
 });

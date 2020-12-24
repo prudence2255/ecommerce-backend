@@ -42,7 +42,7 @@ class CategoryController extends Controller
 
        if($category){
            return response()->json(['data' => $category], 200);
-       } 
+       }
     }
 
     /**
@@ -68,6 +68,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|unique:categories,name,'.$category->id,
         ]);
+        
        $category->slug = null;
         $category->update([
             'name' => $request->name,

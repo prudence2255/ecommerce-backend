@@ -2,30 +2,30 @@
 
 namespace App\Http\Repositories;
 
-use App\Apartment;
-use App\House;
-use App\Customer;
-use App\Land;
-use App\CommercialProp;
 use App\Ad;
-use App\Event;
-use App\Domestic;
-use App\Health;
-use App\Trade;
-use App\Part;
 use App\Car;
+use App\Land;
+use App\Part;
+use App\Event;
+use App\House;
 use App\Motor;
+use App\Trade;
+use App\Health;
+use App\Customer;
+use App\Domestic;
+use App\Apartment;
+use App\CommercialProp;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class StoreAdRepository {
-   
+
     protected $data;
     protected $ad;
 
     public function __construct($data){
       $this->data = $data;
     }
-    
+
     public function main_data(){
         $this->data->validate([
             'title' => 'required|string',
@@ -52,14 +52,14 @@ class StoreAdRepository {
             'price' => $this->data->price,
             'images' => $this->data->images,
             'negotiable' => $this->data->negotiable,
-            'uuid' => IdGenerator::generate(['table' => 'users','field' =>'uid', 
+            'uuid' => IdGenerator::generate(['table' => 'users','field' =>'uid',
                                         'length' => 6, 'prefix' => date('y')])
         ]);
         if($this->ad){
           $customer = Customer::where('id', $this->data->user()->id)->first();
           $customer->update(['contact' => $this->data->contact]);
         }
-      return $this->ad;  
+      return $this->ad;
     }
 
     public function apartment(){
@@ -166,7 +166,7 @@ class StoreAdRepository {
       }
     }
     public function event(){
-        
+
         $this->data->validate([
             'service_type' => 'required',
         ]);
@@ -179,7 +179,7 @@ class StoreAdRepository {
         return $event->ad;
       }
     }
-    
+
     public function health(){
         $this->data->validate([
             'service_type' => 'required',
@@ -220,7 +220,7 @@ class StoreAdRepository {
       return $car->ad;
     }
   }
-  
+
   public function motor(){
     $this->data->validate([
       'motor_brand_id' => 'required',
