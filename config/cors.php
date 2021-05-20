@@ -18,6 +18,7 @@ return [
     'paths' => ['api/*'],
 
     'allowed_methods' => ['*'],
+    'access_aontrol_allow_origin' => ['*']
 
     'allowed_origins' => ['*'],
 
